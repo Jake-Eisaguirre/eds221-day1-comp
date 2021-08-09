@@ -1,0 +1,58 @@
+---
+title: "toolik_chloro"
+author: "Jake Eisaguirre"
+date: "8/9/2021"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(tidyverse)
+library(here)
+library(janitor)
+```
+
+## Read in data
+
+```{r}
+toolik_chlorophyll <- read_csv(here::here("data", "data-raw", "toolik_chlorophyll.csv"))
+
+```
+
+## Explore the imported data with `skimr::skim()`, `names() `, `dim()`
+
+```{r}
+skimr::skim(toolik_chlorophyll)
+names(toolik_chlorophyll)
+dim(toolik_chlorophyll)
+
+```
+
+## clean up 
+```{r}
+toolik_chlorophyll <- toolik_chlorophyll %>% clean_names()
+
+```
+
+## scatter plot of depth versus chlorophyll A
+
+-make point size `size` changed based on the conncentration
+-make all points 'cyan4'
+-update the theme to `theme_dark()`
+
+```{r}
+
+toolik_plot <- ggplot(data = toolik_chlorophyll, aes(x = active_chl_a_ug_l, y = depth)) +
+  geom_point(aes(size = active_chl_a_ug_l), 
+             color = "cyan",
+             alpha = 0.5) 
+
+```
+
+```{r}
+
+ggsave(here::here("figs", "chlorophyll_graph.jpg"), plot = toolik_plot)
+
+
+```
+
